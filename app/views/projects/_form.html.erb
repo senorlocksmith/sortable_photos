@@ -1,0 +1,47 @@
+<%= form_with(model: project) do |form| %>
+  <% if project.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
+
+      <ul>
+        <% project.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :images %>
+    <%= form.file_field :images, multiple: true %>
+  </div>
+
+   <% if @project.persisted? %>
+<% if @project.images.attached? %>
+    <section class="pb-6  px-0">
+        <div data-controller="drag" data-drag-animation-value="150" data-url="<%= sort_attachments_projects_path %>" class="flex flex-wrap -mx-4 -mb-8">
+          <% @project.images.order(:position).each do |images| %>
+              <div data-id="<%= dom_id(images) %>" class="px-4 mb-8" >
+                <%= image_tag images.variant(resize_to_limit: [150, 150]).processed, class: "rounded shadow-md"%>
+               <%= link_to "Delete", delete_image_projects_path(@project.id, images.id), method: :delete, class: "btn btn-xs", data: {confirm: "Are you sure?"} %>
+              </div>
+          <% end %>  
+        </div>
+     </section>
+<% end %>
+<% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

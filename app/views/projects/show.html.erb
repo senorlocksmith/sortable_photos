@@ -1,0 +1,26 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @project.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @project.description %>
+</p>
+
+<p>
+  <strong>Images:</strong>
+
+
+  <% if @project.images.attached? %>
+          <% @project.images.order(:position).each do |images| %>
+                <%= image_tag images.variant(resize_to_limit: [150, 150]).processed, class: "rounded shadow-md"%>
+          <% end %>  
+<% end %>
+
+</p>
+
+<%= link_to 'Edit', edit_project_path(@project) %> |
+<%= link_to 'Back', projects_path %>
